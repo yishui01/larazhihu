@@ -6,12 +6,13 @@ use App\Models\Question;
 
 class AnswersController extends Controller
 {
-    public function store(Question $question)
+    public function store($questionId)
     {
+        /** @var Question $question */
+        $question = Question::published()->findOrFail($questionId);
         $question->answers()->create([
             "user_id" => request("user_id"),
             "content" => request("content"),
-            "question_id" => request("question_id"),
         ]);
         return response()->json([], 201);
     }
