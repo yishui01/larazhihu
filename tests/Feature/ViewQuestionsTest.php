@@ -7,7 +7,10 @@ use Tests\TestCase;
 
 class ViewQuestionsTest extends TestCase
 {
-    public function testUserCanViewQuestions()
+    /**
+     * @test
+     */
+    public function UserCanViewQuestions()
     {
         // 不捕获异常，直接抛出
         $this->withoutExceptionHandling();
