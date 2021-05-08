@@ -15,14 +15,13 @@ class PostAnswerTest extends TestCase
     /**
      * @test
      */
-    public function user_can_post_an_answer_to_a_published_question()
+    public function signed_in_user_can_post_an_answer_to_a_published_question()
     {
         /** @var Question $question */
         $question = Question::factory()->published()->create();
-        $user = User::factory()->create();
-
+        //$user = User::factory()->create();
+        $this->actingAs($user = User::factory()->create());
         $response = $this->post("/questions/{$question->id}/answers", [
-            'user_id' => $user->id,
             'content' => "this is an answer."
         ]);
 
@@ -50,4 +49,23 @@ class PostAnswerTest extends TestCase
         $this->assertEquals(0, $question->answers()->count());
 
     }
+
+    /**
+     * @test
+     */
+    public function content_is_required_to_post_answers()
+    {
+        $this->withExceptionHandling();
+        $question = Question::factory()->published()->create();
+        $user = User::factory()->create();
+
+        $response = $this->post("/questions/{$question->id}/answers", [
+            'user_id' => $user->id,
+            'content' => null,
+        ]);
+        $response->assertRedirect();
+        $response->assertSessionHasErrors('content');
+    }
+
+
 }

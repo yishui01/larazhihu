@@ -6,12 +6,20 @@ use App\Models\Question;
 
 class AnswersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store($questionId)
     {
+        $this->validate(request(), [
+            'content' => 'required'
+        ]);
         /** @var Question $question */
         $question = Question::published()->findOrFail($questionId);
         $question->answers()->create([
-            "user_id" => request("user_id"),
+            "user_id" => auth()->id(),
             "content" => request("content"),
         ]);
         return response()->json([], 201);
