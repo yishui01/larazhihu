@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Question;
 use App\Models\User;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,23 +20,36 @@ class PostAnswerTest extends TestCase
     {
         /** @var Question $question */
         $question = Question::factory()->published()->create();
-        //$user = User::factory()->create();
         $this->actingAs($user = User::factory()->create());
         $response = $this->post("/questions/{$question->id}/answers", [
             'content' => "this is an answer."
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(302);
         $answer = $question->answers()->where('user_id', $user->id)->first();
         $this->assertNotNull($answer);
         $this->assertEquals(1, $question->answers()->count());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
+    public function guest_may_not_post_an_answer()
+    {
+        $this->expectException(AuthenticationException::class);
+        $question = Question::factory()->published()->create();
+        $response = $this->post("/questions/{$question->id}/answers", [
+            'content' => 'This is an answer'
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function user_can_not_post_an_answer_to_an_unpublished_question()
     {
         $question = Question::factory()->unpublished()->create();
-        $user = User::factory()->create();
+        $this->actingAs($user = User::factory()->create());
 
         $response = $this->withExceptionHandling()
             ->post("/questions/{$question->id}/answers", [
@@ -49,6 +63,7 @@ class PostAnswerTest extends TestCase
         $this->assertEquals(0, $question->answers()->count());
 
     }
+//
 
     /**
      * @test
@@ -57,7 +72,7 @@ class PostAnswerTest extends TestCase
     {
         $this->withExceptionHandling();
         $question = Question::factory()->published()->create();
-        $user = User::factory()->create();
+        $this->actingAs($user = User::factory()->create());
 
         $response = $this->post("/questions/{$question->id}/answers", [
             'user_id' => $user->id,

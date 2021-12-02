@@ -16,8 +16,8 @@ class ViewQuestionsTest extends TestCase
      */
     public function user_can_view_questions()
     {
-        // 不捕获异常，直接抛出
-        $this->withoutExceptionHandling();
+        // 不捕获异常，直接抛出,异界在TestCase的setup中设置了
+        // $this->withoutExceptionHandling();
 
         // 1.假设 /questions 路由存在
         // 2. 访问链接 questions

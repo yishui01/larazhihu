@@ -8,7 +8,7 @@ class AnswersController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function store($questionId)
@@ -22,6 +22,6 @@ class AnswersController extends Controller
             "user_id" => auth()->id(),
             "content" => request("content"),
         ]);
-        return response()->json([], 201);
+        return back();
     }
 }
