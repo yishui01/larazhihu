@@ -37,6 +37,7 @@ class BestAnswerTest extends TestCase
 
         $this->post(route('best-answers.store', ['answer' => $answers[1]]), [$answers[1]]);
 
+        //这里要调用fresh更新一下关联的question（上面两行会把关联的question缓存起来）
         $this->assertFalse($answers[0]->fresh()->isBest());
         $this->assertTrue($answers[1]->fresh()->isBest());
     }
