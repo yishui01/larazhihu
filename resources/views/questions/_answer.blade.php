@@ -26,7 +26,6 @@
 
           @can('delete', $answer)
             <form action="/answers/{{ $answer->id }}" method="POST" accept-charset="UTF-8">
-              {{ method_field("DELETE") }}
               {{ csrf_field() }}
               <button type="submit" class="btn btn-primary btn-sm">删除</button>
             </form>

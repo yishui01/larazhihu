@@ -25,4 +25,14 @@ class Answer extends Model
     {
         return $this->id == $this->question->best_answer_id;
     }
+
+    public function voteUp($user)
+    {
+        $this->votes('vote_up')->create(['user_id' => $user->id, 'type' => 'vote_up']);
+    }
+
+    public function votes($type)
+    {
+        return $this->morphMany(Vote::class, 'voted')->where('type', $type);
+    }
 }
