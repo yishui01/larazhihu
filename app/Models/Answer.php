@@ -21,6 +21,11 @@ class Answer extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getUpVotesCountAttribute()
+    {
+        return $this->votes('vote_up')->count();
+    }
+
     public function isBest()
     {
         return $this->id == $this->question->best_answer_id;
@@ -43,5 +48,13 @@ class Answer extends Model
     public function votes($type)
     {
         return $this->morphMany(Vote::class, 'voted')->where('type', $type);
+    }
+
+    public function isVotedUp($user)
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->votes('vote_up')->where('user_id', $user->id)->exists();
     }
 }
