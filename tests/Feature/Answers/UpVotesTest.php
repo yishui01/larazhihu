@@ -54,7 +54,7 @@ class UpVotesTest extends TestCase
         $this->post("/answers/{$answer->id}/up-votes")
             ->assertStatus(201);
         $this->assertCount(1, $answer->refresh()->votes('vote_up')->get());
-        $this->post("/answers/{$answer->id}/down-votes");
+        $this->post("/answers/{$answer->id}/cancel-up-votes");
         $this->assertCount(0, $answer->refresh()->votes('vote_up')->get());
     }
 

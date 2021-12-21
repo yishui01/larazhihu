@@ -11,13 +11,12 @@ class AnswerUpVotesController extends Controller
     public function store(Answer $answer)
     {
         $answer->voteUp(Auth::user());
-
         return response([], 201);
     }
 
     public function destroy(Answer $answer)
     {
-        $answer->voteDown(Auth::user());
+        $answer->cancelVoteUp(Auth::user());
         return response([], 200);
     }
 }
