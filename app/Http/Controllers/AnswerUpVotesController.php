@@ -14,4 +14,10 @@ class AnswerUpVotesController extends Controller
 
         return response([], 201);
     }
+
+    public function destroy(Answer $answer)
+    {
+        $answer->voteDown(Auth::user());
+        return response([], 200);
+    }
 }

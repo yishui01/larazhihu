@@ -20,6 +20,18 @@ class UpVotesTest extends TestCase
             ->assertRedirect('/login');
     }
 
+    /**
+     * @test
+     */
+    public function guest_can_not_vote_down()
+    {
+        $this->withExceptionHandling()->post('/answers/1/down-votes')
+            ->assertRedirect('/login');
+    }
+
+    /**
+     * @test
+     */
     public function authenticated_user_can_vote_up()
     {
         $this->signIn();
@@ -29,5 +41,19 @@ class UpVotesTest extends TestCase
         $this->post("/answers/{$answer->id}/up-votes")
             ->assertStatus(201);
         $this->assertCount(1, $answer->refresh()->votes('vote_up')->get());
+    }
+
+    /**
+     * @test
+     */
+    public function an_authenticated_user_can_cancel_vote_up()
+    {
+        $this->signIn();
+        $answer = create(Answer::class);
+        $this->post("/answers/{$answer->id}/up-votes")
+            ->assertStatus(201);
+        $this->assertCount(1, $answer->refresh()->votes('vote_up')->get());
+        $this->post("/answers/{$answer->id}/down-votes");
+        $this->assertCount(0, $answer->refresh()->votes('vote_up')->get());
     }
 }
