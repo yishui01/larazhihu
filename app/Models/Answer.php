@@ -26,6 +26,11 @@ class Answer extends Model
         return $this->votes('vote_up')->count();
     }
 
+    public function getDownVotesCountAttribute()
+    {
+        return $this->votes('vote_down')->count();
+    }
+
     public function isBest()
     {
         return $this->id == $this->question->best_answer_id;
@@ -70,5 +75,13 @@ class Answer extends Model
             return false;
         }
         return $this->votes('vote_up')->where('user_id', $user->id)->exists();
+    }
+
+    public function isVotedDown($user)
+    {
+        if (!$user) {
+            return false;
+        }
+        return $this->votes('vote_down')->where('user_id', $user->id)->exists();
     }
 }
