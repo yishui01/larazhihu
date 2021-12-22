@@ -29,4 +29,17 @@ class DownVotesTest extends TestCase
             ->assertStatus(201);
     }
 
+    /**
+     * @test
+     */
+    public function an_authenticated_user_can_cancel_vote_down()
+    {
+        $this->signIn();
+        $answer = create(Answer::class);
+        $this->post("/answers/{$answer->id}/down-votes");
+        $this->assertCount(1, $answer->refresh()->votes('vote_down')->get());
+        $this->post("/answers/{$answer->id}/cancel-down-votes");
+        $this->assertCount(0, $answer->refresh()->votes('vote_down')->get());
+    }
+
 }

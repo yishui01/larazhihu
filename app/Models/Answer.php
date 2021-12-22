@@ -54,6 +54,11 @@ class Answer extends Model
         $this->votes('vote_up')->where(['user_id' => $user->id, 'type' => 'vote_up'])->delete();
     }
 
+    public function cancelVoteDown($user)
+    {
+        $this->votes('vote_down')->where(['user_id' => $user->id, 'type' => 'vote_down'])->delete();
+    }
+
     public function votes($type)
     {
         return $this->morphMany(Vote::class, 'voted')->where('type', $type);

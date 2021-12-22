@@ -122,4 +122,21 @@ class AnswerTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function can_cancel_vote_down_answer()
+    {
+        $this->signIn();
+
+        /** @var Answer $answer */
+        $answer = create(Answer::class);
+        $answer->voteDown(auth()->user());
+        $answer->cancelVoteDown(auth()->user());
+        $this->assertDatabaseMissing('votes', [
+            'user_id'    => auth()->id(),
+            'voted_id'   => $answer->id,
+            'voted_type' => get_class($answer),
+            'type'       => 'vote_down',
+        ]);
+    }
+
 }
