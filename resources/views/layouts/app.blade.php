@@ -30,6 +30,7 @@
   </div>
 
   @include('layouts._footer')
+  <flash message="{{ session('flash') }}"></flash>
 </div>
 </body>
 @if (config('app.debug'))
