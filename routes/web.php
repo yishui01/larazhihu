@@ -24,7 +24,7 @@ Route::get("/questions/{question}", "QuestionsController@show");
 Route::middleware('auth')->group(function () {
     Route::post('/questions/{question}/answers', 'AnswersController@store');
     Route::post('/answers/{answer}/best', 'BestAnswersController@store')->name('best-answers.store');
-    Route::post('/answers/{answer}', 'AnswersController@destroy')->name('answers.destroy');
+    Route::delete('/answers/{answer}', 'AnswersController@destroy')->name('answers.destroy');
     Route::post('/answers/{answer}/up-votes', 'AnswerUpVotesController@store')->name('answer-up-votes.store');
     Route::post('/answers/{answer}/cancel-up-votes', 'AnswerUpVotesController@destroy')->name('answer-up-votes.destroy');
     Route::post('/answers/{answer}/down-votes', 'AnswerDownVotesController@store')->name('answer-down-votes.store');
