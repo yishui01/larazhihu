@@ -19,8 +19,8 @@
 </head>
 
 <body>
-<div id="app" class="{{ route_class() }}-page">
 
+<div id="app" class="{{ route_class() }}-page">
   @include('layouts._header')
 
   <div class="container">
@@ -32,7 +32,12 @@
   @include('layouts._footer')
 </div>
 </body>
-{{--@if (config('app.debug'))--}}
-{{--  @include('sudosu::user-selector')--}}
-{{--@endif--}}
+@if (config('app.debug'))
+  @include('sudosu::user-selector')
+@endif
+<script>
+    window.App = {!! json_encode([
+  'signedIn' =>\Illuminate\Support\Facades\Auth::check()
+  ]) !!}
+</script>
 </html>
