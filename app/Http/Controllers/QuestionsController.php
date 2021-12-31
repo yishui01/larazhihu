@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionsController extends Controller
 {
     public function index()
     {
 
+    }
+
+    public function store()
+    {
+        $question = Question::create([
+            'user_id'     => Auth::id(),
+            'category_id' => request('category_id'),
+            'title'       => request('title'),
+            'content'     => request('content')
+        ]);
+
+        return redirect("/questions/{$question->id}")->with('flash', "创建成功！");
     }
 
     public function show($questionId)
@@ -19,7 +32,7 @@ class QuestionsController extends Controller
         $answers = $question->answers()->paginate(20);
         array_map(function ($item) {
             return $this->appendVotedAttribute($item);
-        },$answers->items());
+        }, $answers->items());
         return view("questions.show", [
             "question" => $question,
             "answers"  => $answers
