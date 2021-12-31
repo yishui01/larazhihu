@@ -15,6 +15,11 @@ class QuestionsController extends Controller
 
     public function store()
     {
+        $this->validate(\request(), [
+            'title'       => 'required',
+            'content'     => 'required',
+            'category_id' => 'required|exists:categories,id',
+        ]);
         $question = Question::create([
             'user_id'     => Auth::id(),
             'category_id' => request('category_id'),

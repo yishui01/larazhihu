@@ -17,7 +17,7 @@ class DeleteAnswersTest extends TestCase
     {
         $this->withExceptionHandling();
         $answer = create(Answer::class);
-        $this->post(route('answers.destroy', ['answer' => $answer]))
+        $this->delete(route('answers.destroy', ['answer' => $answer]))
             ->assertRedirect('login');
     }
 
@@ -31,7 +31,7 @@ class DeleteAnswersTest extends TestCase
 
         $answer = create(Answer::class);
 
-        $this->post(route('answers.destroy', ['answer' => $answer]))
+        $this->delete(route('answers.destroy', ['answer' => $answer]))
             ->assertStatus(403);
     }
 
@@ -42,7 +42,7 @@ class DeleteAnswersTest extends TestCase
     {
         $this->signIn();
         $answer = create(Answer::class, ['user_id' => \Auth::id()]);
-        $this->post(route('answers.destroy', ['answer' => $answer]))->assertStatus(302);
+        $this->delete(route('answers.destroy', ['answer' => $answer]))->assertStatus(302);
         $this->assertDatabaseMissing('answers', ['id' => $answer->id]);
     }
 
