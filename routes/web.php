@@ -30,4 +30,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/answers/{answer}/cancel-up-votes', 'AnswerUpVotesController@destroy')->name('answer-up-votes.destroy');
     Route::post('/answers/{answer}/down-votes', 'AnswerDownVotesController@store')->name('answer-down-votes.store');
     Route::post('/answers/{answer}/cancel-down-votes', 'AnswerDownVotesController@destroy')->name('answer-down-votes.destroy');
+    Route::post('/questions/{question}/published-questions', 'PublishedQuestionsController@store')->name('published-questions.store');
 });
