@@ -61,4 +61,14 @@ class QuestionTest extends TestCase
         $this->assertInstanceOf('App\Models\User', $question->creator);
     }
 
+    /**
+     * @test
+     */
+    public function it_can_detect_all_invited_users()
+    {
+        $question = create(Question::class, [
+            'content' => '@Jane @Luke please help me!'
+        ]);
+        $this->assertEquals(['Jane', 'Luke'], $question->invitedUsers());
+    }
 }
