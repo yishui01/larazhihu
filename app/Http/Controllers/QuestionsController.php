@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class QuestionsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('must-verify-email')->except(['index', 'show']);
+    }
+
     public function index()
     {
 

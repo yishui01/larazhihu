@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get("/questions", "QuestionsController@index");
 Route::get("/questions/{question}", "QuestionsController@show");
