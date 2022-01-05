@@ -7,6 +7,8 @@ use App\Models\Question;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Filters\QuestionFilter;
+
 
 class QuestionsController extends Controller
 {
@@ -16,7 +18,7 @@ class QuestionsController extends Controller
         $this->middleware('must-verify-email')->except(['index', 'show']);
     }
 
-    public function index(Category $category)
+    public function index(Category $category, QuestionFilter $filters)
     {
         if ($category->exists) {
             $questions = Question::published()->where('category_id', $category->id);
