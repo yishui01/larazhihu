@@ -20,7 +20,9 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get("/questions", "QuestionsController@index");
+
 Route::middleware('auth')->group(function () {
+    Route::get('/drafts', 'DraftsController@index');
     Route::get('/questions/create', 'QuestionsController@create')->name('questions.create');
     Route::post("/questions", "QuestionsController@store")->name('questions.store');
     Route::post('/questions/{question}/answers', 'AnswersController@store');

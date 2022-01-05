@@ -34,7 +34,7 @@ class QuestionsController extends Controller
             'content'     => request('content')
         ]);
 
-        return redirect("/questions/{$question->id}")->with('flash', "创建成功！");
+        return redirect("/drafts")->with('flash', "创建成功！");
     }
 
     public function create(Question $question)
