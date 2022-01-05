@@ -20,8 +20,8 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get("/questions", "QuestionsController@index");
-Route::get("/questions/{question}", "QuestionsController@show");
 Route::middleware('auth')->group(function () {
+    Route::get('/questions/create', 'QuestionsController@create')->name('questions.create');
     Route::post("/questions", "QuestionsController@store")->name('questions.store');
     Route::post('/questions/{question}/answers', 'AnswersController@store');
     Route::post('/answers/{answer}/best', 'BestAnswersController@store')->name('best-answers.store');
@@ -32,3 +32,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/answers/{answer}/cancel-down-votes', 'AnswerDownVotesController@destroy')->name('answer-down-votes.destroy');
     Route::post('/questions/{question}/published-questions', 'PublishedQuestionsController@store')->name('published-questions.store');
 });
+Route::get("/questions/{question}", "QuestionsController@show");
+
