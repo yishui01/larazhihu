@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
-Route::get("/questions", "QuestionsController@index");
+Route::get("/questions/{category?}", "QuestionsController@index");
 
 Route::middleware('auth')->group(function () {
     Route::get('/drafts', 'DraftsController@index');
