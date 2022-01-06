@@ -19,9 +19,9 @@ class AnswersController extends Controller
         ]);
         /** @var Question $question */
         $question = Question::published()->findOrFail($questionId);
-        $question->answers()->create([
-            "user_id" => auth()->id(),
-            "content" => request("content"),
+        $question->addAnswer([
+            'user_id' => auth()->id(),
+            'content' => request('content')
         ]);
         return back()->with('flash', '回答发布成功！');
     }

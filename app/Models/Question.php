@@ -29,6 +29,21 @@ class Question extends Model
         return $this->hasMany(Subscription::class);
     }
 
+    public function addAnswer($answer)
+    {
+        return $this->answers()->create($answer);
+    }
+
+    public function subscribe($userId)
+    {
+        $this->subscriptions()->create(['user_id' => $userId]);
+    }
+
+    public function unsubscribe($userId)
+    {
+        $this->subscriptions()->where('user_id', $userId)->delete();
+    }
+
     public function markAsBestAnswer($answer)
     {
         $this->best_answer_id = $answer->id;
