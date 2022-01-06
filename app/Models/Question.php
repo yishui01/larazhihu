@@ -24,6 +24,11 @@ class Question extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function markAsBestAnswer($answer)
     {
         $this->best_answer_id = $answer->id;

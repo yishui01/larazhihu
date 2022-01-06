@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -100,5 +101,15 @@ class QuestionTest extends TestCase
         $question = create(Question::class);
         create(Answer::class, ['question_id' => $question->id]);
         $this->assertEquals(1, $question->refresh()->answers_count);
+    }
+
+    /**
+     * @test
+     */
+    public function a_question_has_many_subscriptions()
+    {
+        $question = create(Question::class);
+        create(Subscription::class, ['question_id' => $question->id], 2);
+        $this->assertInstanceOf(HasMany::class, $question->subscriptions());
     }
 }
