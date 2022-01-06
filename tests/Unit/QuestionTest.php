@@ -6,9 +6,11 @@ use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Notifications\QuestionWasUpdated;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class QuestionTest extends TestCase
@@ -153,6 +155,24 @@ class QuestionTest extends TestCase
             'user_id' => create(User::class)->id
         ]);
         $this->assertEquals(1, $question->refresh()->answers()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function notify_all_subscribers_when_an_answer_is_added()
+    {
+        Notification::fake();
+        $user = create(User::class);
+
+        /** @var Question $question */
+        $question = create(Question::class);
+        $question->subscribe($user->id);
+        $question->addAnswer([
+            'content' => 'Foobar',
+            'user_id' => 999 // 伪造一个与当前登录用户不同的 id
+        ]);
+        Notification::assertSentTo($user, QuestionWasUpdated::class);
     }
 
 }

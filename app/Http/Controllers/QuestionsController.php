@@ -26,6 +26,9 @@ class QuestionsController extends Controller
             $questions = Question::published();
         }
         $questions = $questions->filter($filters)->paginate(20);
+        array_map(function (&$item) {
+            return $this->appendAttribute($item);
+        }, $questions->items());
         return view('questions.index', [
             'questions' => $questions
         ]);
@@ -70,5 +73,16 @@ class QuestionsController extends Controller
             "question" => $question,
             "answers"  => $answers
         ]);
+    }
+
+    protected function appendAttribute($item)
+    {
+        $user = Auth::user();
+
+        $item->isVotedUp = $item->isVotedUp($user);
+        $item->isVotedDown = $item->isVotedDown($user);
+        $item->isSubscribedTo = $item->isSubscribedTo($user);
+
+        return $item;
     }
 }

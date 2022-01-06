@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\VoteTrait;
+use App\Notifications\QuestionWasUpdated;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,17 @@ class Question extends Model
     use VoteTrait;
 
     protected $guarded = ['id'];
+
+    protected $appends = [
+        'upVotesCount',
+        'downVotesCount',
+        'subscriptionsCount'
+    ];
+
+    public function getSubscriptionsCountAttribute()
+    {
+        return $this->subscriptions()->count();
+    }
 
     public function answers()
     {
@@ -31,7 +43,20 @@ class Question extends Model
 
     public function addAnswer($answer)
     {
-        return $this->answers()->create($answer);
+        $answer = $this->answers()->create($answer);
+        $this->subscriptions()->where('user_id', '!=', $answer->user_id)
+            ->each(function ($item) use ($answer) {
+                $item->notify($answer);
+            });
+        return $answer;
+    }
+
+    public function isSubscribedTo($userId)
+    {
+        if (!$userId) {
+            return false;
+        }
+        return Subscription::where(['user_id' => $userId, 'question_id' => $this->id])->exists();
     }
 
     public function subscribe($userId)
