@@ -25,13 +25,7 @@ class QuestionsController extends Controller
         } else {
             $questions = Question::published();
         }
-        if ($username = request('by')) {
-            $user = User::whereName($username)->first();
-            if ($user) {
-                $questions->where('user_id', $user->id);
-            }
-        }
-        $questions = $questions->paginate(20);
+        $questions = $questions->filter($filters)->paginate(20);
         return view('questions.index', [
             'questions' => $questions
         ]);
@@ -64,7 +58,7 @@ class QuestionsController extends Controller
         ]);
     }
 
-    public function show($questionId)
+    public function show($category, $questionId)
     {
         /** @var Question $question */
         $question = Question::published()->findOrFail($questionId);

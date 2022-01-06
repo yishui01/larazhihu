@@ -3,6 +3,7 @@
 namespace Tests\Feature\Questions;
 
 use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Question;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,8 +49,13 @@ class ViewQuestionsTest extends TestCase
      */
     public function user_can_view_a_published_question()
     {
-        $question = Question::factory()->create(['published_at' => Carbon::parse("-1 week")]);
-        $this->get("/questions/" . $question->id)
+        $category = create(Category::class);
+        $question = Question::factory()->create([
+            'published_at' => Carbon::parse('-1 week'),
+            'category_id'  => $category->id
+        ]);
+
+        $this->get('/questions/' . $category->slug . "/" . $question->id)
             ->assertStatus(200)
             ->assertSee($question->title)
             ->assertSee($question->content);
@@ -72,10 +78,17 @@ class ViewQuestionsTest extends TestCase
      */
     public function can_see_answers_when_view_a_published_question()
     {
-        $question = Question::factory()->published()->create();
+        $category = create(Category::class);
+        $question = create(Question::class, [
+            'published_at' => Carbon::now(),
+            'category_id'  => $category->id
+        ]);
         create(Answer::class, ['question_id' => $question->id], 40);
-        $response = $this->get('/questions/' . $question->id);
-        $result = $response->data('answers')->toArray();
+
+        $response = $this->get("/questions/$category->slug/$question->id");
+
+        $result = $response->viewData('answers')->toArray();
+
         $this->assertCount(20, $result['data']);
         $this->assertEquals(40, $result['total']);
     }

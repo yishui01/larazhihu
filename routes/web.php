@@ -34,5 +34,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/answers/{answer}/cancel-down-votes', 'AnswerDownVotesController@destroy')->name('answer-down-votes.destroy');
     Route::post('/questions/{question}/published-questions', 'PublishedQuestionsController@store')->name('published-questions.store');
 });
-Route::get("/questions/{question}", "QuestionsController@show");
+Route::get("/questions/{category}/{question}", "QuestionsController@show");
 

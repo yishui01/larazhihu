@@ -33,4 +33,16 @@ class Answer extends Model
         return $this->id == $this->question->best_answer_id;
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            $reply->question->increment('answers_count');
+        });
+        static::deleted(function ($reply) {
+            $reply->question->decrement('answers_count');
+        });
+    }
+
 }

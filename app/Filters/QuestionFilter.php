@@ -9,6 +9,7 @@ class QuestionFilter
 {
     protected $request;
     protected $queryBuilder;
+    protected $filters = ['by', 'popularity', 'unanswered'];
 
     public function __construct(Request $request)
     {
@@ -18,8 +19,11 @@ class QuestionFilter
     public function apply($builder)
     {
         $this->queryBuilder = $builder;
-        if ($username = $this->request->by) {
-            $this->by($username);
+        $filters = array_filter($this->request->only($this->filters));
+        foreach ($filters as $filter => $value) {
+            if (method_exists($this, $filter)) {
+                $this->$filter($value);
+            }
         }
         return $this->queryBuilder;
     }
@@ -32,4 +36,15 @@ class QuestionFilter
         }
         return $this->queryBuilder;
     }
+
+    public function popularity()
+    {
+        $this->queryBuilder->orderBy('answers_count', 'desc');
+    }
+
+    public function unanswered()
+    {
+        $this->queryBuilder->where('answers_count', '=', 0);
+    }
+
 }
