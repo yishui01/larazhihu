@@ -41,6 +41,16 @@ class Question extends Model
         return $this->hasMany(Subscription::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function path()
+    {
+        return $this->slug ? "/questions/{$this->category->slug}/{$this->id}/{$this->slug}" : "/questions/{$this->category->slug}/{$this->id}";
+    }
+
     public function addAnswer($answer)
     {
         $answer = $this->answers()->create($answer);

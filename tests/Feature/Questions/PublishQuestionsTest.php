@@ -17,10 +17,14 @@ class PublishQuestionsTest extends TestCase
     public function can_publish_question()
     {
         $this->signIn();
-        /** @var Question $question */
+
         $question = create(Question::class, ['user_id' => auth()->id()]);
+
         $this->assertCount(0, Question::published()->get());
-        $question->publish();
+
+        $this->post(route('published-questions.store', ['question' => $question]))
+            ->assertRedirect($question->refresh()->path());
+
         $this->assertCount(1, Question::published()->get());
     }
 

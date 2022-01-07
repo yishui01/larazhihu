@@ -42,5 +42,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/questions/{question}/subscriptions', 'SubscribeQuestionsController@store')->name('subscribe-questions.store');
     Route::delete('/questions/{question}/subscriptions', 'SubscribeQuestionsController@destroy')->name('subscribe-questions.destroy');
 });
-Route::get("/questions/{category}/{question}", "QuestionsController@show");
+Route::get("/questions/{category}/{question}/{slug?}", "QuestionsController@show");
 

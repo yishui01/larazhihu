@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Jobs\TranslateSlug;
 use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Question;
 use App\Models\Subscription;
 use App\Models\User;
@@ -11,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class QuestionTest extends TestCase
@@ -173,6 +176,39 @@ class QuestionTest extends TestCase
             'user_id' => 999 // 伪造一个与当前登录用户不同的 id
         ]);
         Notification::assertSentTo($user, QuestionWasUpdated::class);
+    }
+
+    /**
+     * @test
+     */
+    public function a_translate_slug_job_is_pushed_when_create_question()
+    {
+        Queue::fake();
+        create(Question::class, ['title' => '英语 英语']);
+        Queue::assertPushed(TranslateSlug::class);
+    }
+
+    /**
+     * @test
+     */
+    public function question_has_a_path()
+    {
+        $category = create(Category::class);
+
+        $question = create(Question::class, [
+            'slug'        => 'english-english',
+            'category_id' => $category->id
+        ]);
+
+        $this->assertEquals("/questions/{$question->category->slug}/{$question->id}/english-english", $question->path());
+    }
+
+    /** @test */
+    public function a_question_belongs_to_a_category()
+    {
+        $question = create(Question::class);
+
+        $this->assertInstanceOf(Category::class, $question->category);
     }
 
 }

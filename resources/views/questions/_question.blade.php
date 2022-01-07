@@ -1,7 +1,7 @@
 <li class="media">
   <div class="media-body">
     <div class="media-heading mt-1 mb-1">
-      <a class="text-dark" href="/questions/{{ $question->id }}" title="{{ $question->title }}">
+      <a class="text-dark" href="/questions/{{ $question->category->id }}/{{ $question->id }}/{{ $question->slug }}" title="{{ $question->title }}">
         {{ $question->title }}
       </a>
       <a class="float-right text-muted">

@@ -16,6 +16,6 @@ class PublishedQuestionsController extends Controller
         $this->authorize('update', $question);
         $question->publish();
         event(new PublishQuestion($question));
-        return redirect("/questions/{$question->id}")->with('flash', "发布成功！");
+        return redirect($question->path())->with('flash', "发布成功！");
     }
 }
