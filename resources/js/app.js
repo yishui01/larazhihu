@@ -16,6 +16,8 @@ window.flash = function (message) {
 
 Vue.component('answer', require('./components/Answer').default);
 Vue.component('flash', require('./components/Flash').default);
+Vue.component('question', require('./components/Question').default);
+
 const app = new Vue({
     el: '#app',
 });
