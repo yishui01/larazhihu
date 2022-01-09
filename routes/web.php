@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/questions/{question}/down-votes', 'QuestionDownVotesController@store')->name('question-down-votes.store');
     Route::post('/questions/{question}/cancel-down-votes', 'QuestionDownVotesController@destroy')->name('question-down-votes.destroy');
     Route::post('/questions/{question}/comments', 'QuestionCommentsController@store')->name('question-comments.store');
-
+    Route::post('/answers/{answer}/comments', 'AnswerCommentsController@store')->name('answer-comments.store');
     Route::post('/answers/{answer}/best', 'BestAnswersController@store')->name('best-answers.store');
     Route::delete('/answers/{answer}', 'AnswersController@destroy')->name('answers.destroy');
     Route::post('/answers/{answer}/up-votes', 'AnswerUpVotesController@store')->name('answer-up-votes.store');

@@ -33,9 +33,9 @@
   <flash message="{{ session('flash') }}"></flash>
 </div>
 </body>
-@if (config('app.debug'))
-  @include('sudosu::user-selector')
-@endif
+{{--@if (config('app.debug'))--}}
+{{--  @include('sudosu::user-selector')--}}
+{{--@endif--}}
 <script>
     window.App = {!! json_encode([
   'signedIn' =>\Illuminate\Support\Facades\Auth::check()

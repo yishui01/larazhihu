@@ -16,6 +16,7 @@ class Answer extends Model
     protected $appends = [
         'upVotesCount',
         'downVotesCount',
+        'commentsCount',
     ];
 
     public function question()
@@ -31,6 +32,24 @@ class Answer extends Model
     public function isBest()
     {
         return $this->id == $this->question->best_answer_id;
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments->count();
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commented');
+    }
+
+    public function comment($content, $user)
+    {
+        $this->comments()->create([
+            'user_id' => $user->id,
+            'content' => $content
+        ]);
     }
 
     protected static function boot()
