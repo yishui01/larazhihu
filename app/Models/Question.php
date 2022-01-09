@@ -18,7 +18,8 @@ class Question extends Model
     protected $appends = [
         'upVotesCount',
         'downVotesCount',
-        'subscriptionsCount'
+        'subscriptionsCount',
+        'commentsCount',
     ];
 
     public function getSubscriptionsCountAttribute()
@@ -44,6 +45,24 @@ class Question extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commented');
+    }
+
+    public function comment($content, $user)
+    {
+        return $comment = $this->comments()->create([
+            'user_id' => $user->id,
+            'content' => $content
+        ]);
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments->count();
     }
 
     public function path()
