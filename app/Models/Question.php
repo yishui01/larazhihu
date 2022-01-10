@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CommentTrait;
 use App\Models\Traits\VoteTrait;
 use App\Notifications\QuestionWasUpdated;
 use Carbon\Carbon;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    use VoteTrait;
+    use VoteTrait, CommentTrait;
 
     protected $guarded = ['id'];
 
@@ -45,24 +46,6 @@ class Question extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commented');
-    }
-
-    public function comment($content, $user)
-    {
-        return $comment = $this->comments()->create([
-            'user_id' => $user->id,
-            'content' => $content
-        ]);
-    }
-
-    public function getCommentsCountAttribute()
-    {
-        return $this->comments->count();
     }
 
     public function path()
