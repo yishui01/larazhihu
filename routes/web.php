@@ -40,6 +40,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/answers/{answer}/down-votes', 'AnswerDownVotesController@store')->name('answer-down-votes.store');
     Route::post('/answers/{answer}/cancel-down-votes', 'AnswerDownVotesController@destroy')->name('answer-down-votes.destroy');
 
+    Route::post('/comments/{comment}/up-votes', 'CommentUpVotesController@store')->name('comment-up-votes.store');
+    Route::post('/comments/{comment}/cancel-up-votes', 'CommentUpVotesController@destroy')->name('comment-up-votes.destroy');
+    Route::post('/comments/{comment}/down-votes', 'CommentDownVotesController@store')->name('comment-down-votes.store');
+    Route::post('/comments/{comment}/cancel-down-votes', 'CommentDownVotesController@destroy')->name('comment-down-votes.destroy');
+
     Route::post('/questions/{question}/subscriptions', 'SubscribeQuestionsController@store')->name('subscribe-questions.store');
     Route::delete('/questions/{question}/subscriptions', 'SubscribeQuestionsController@destroy')->name('subscribe-questions.destroy');
 });
