@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CommentTrait;
+use App\Models\Traits\InvitedUsersTrait;
 use App\Models\Traits\VoteTrait;
 use App\Notifications\QuestionWasUpdated;
 use Carbon\Carbon;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     use HasFactory;
-    use VoteTrait, CommentTrait;
+    use VoteTrait, CommentTrait, InvitedUsersTrait;
 
     protected $guarded = ['id'];
 

@@ -12,6 +12,7 @@ use Tests\TestCase;
 class AnswerTest extends TestCase
 {
     use RefreshDatabase;
+    use AddCommentContractTest;
 
     /** @test */
     public function it_knows_if_it_is_the_best()
@@ -191,6 +192,11 @@ class AnswerTest extends TestCase
         $answer = create(Answer::class);
         $answer->comment('it is content', create(User::class));
         $this->assertEquals(1, $answer->refresh()->commentsCount);
+    }
+
+    public function getCommentModel()
+    {
+        return create(Answer::class);
     }
 
 }

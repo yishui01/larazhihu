@@ -2,14 +2,18 @@
 
 namespace App\Models\Traits;
 
+use App\Providers\PostComment;
+
 trait CommentTrait
 {
     public function comment($content, $user)
     {
-        return $this->comments()->create([
+        $comment = $this->comments()->create([
             'user_id' => $user->id,
             'content' => $content
         ]);
+        event(new PostComment($comment));
+        return $comment;
     }
 
     public function comments()

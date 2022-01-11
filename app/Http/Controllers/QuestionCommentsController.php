@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class QuestionCommentsController extends Controller
 {
+
+    public function index(Question $question)
+    {
+        $comments = $question->comments()->paginate(10);
+        array_map(function ($item) {
+            return $this->appendVotedAttribute($item);
+        }, $comments->items());
+        return $comments;
+    }
+
     public function store($questionId)
     {
         $this->validate(request(), [
@@ -14,11 +24,7 @@ class QuestionCommentsController extends Controller
         ]);
         /** @var Question $question */
         $question = Question::published()->findOrFail($questionId);
-        $comment = $question->comments()->create([
-            'user_id' => auth()->id(),
-            'content' => request('content')
-        ]);
-
+        $comment = $question->comment(request('content'), auth()->user());
         return back();
     }
 }

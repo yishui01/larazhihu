@@ -10,9 +10,12 @@ use App\Models\Question;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Notifications\QuestionWasUpdated;
+use App\Notifications\YouWereMentionedInComment;
+use App\Providers\PostComment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -20,6 +23,7 @@ use Tests\TestCase;
 class QuestionTest extends TestCase
 {
     use RefreshDatabase;
+    use AddCommentContractTest;
 
     /**
      * @test
@@ -246,4 +250,8 @@ class QuestionTest extends TestCase
         $this->assertEquals(1, $question->commentsCount);
     }
 
+    protected function getCommentModel()
+    {
+        return create(Question::class);
+    }
 }

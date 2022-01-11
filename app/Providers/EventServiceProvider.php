@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         PublishQuestion::class => [
             NotifyInvitedUsers::class
         ],
+        PostComment::class => [
+            NotifyMentionedUsersInComment::class
+        ],
     ];
 
     /**

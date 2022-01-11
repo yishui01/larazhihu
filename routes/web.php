@@ -20,6 +20,8 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get("/questions/{category?}", "QuestionsController@index");
+Route::get('/questions/{question}/comments', 'QuestionCommentsController@index')->name('question-comments.index');
+Route::get('/answers/{answer}/comments', 'AnswerCommentsController@index')->name('answer-comments.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/drafts', 'DraftsController@index');
