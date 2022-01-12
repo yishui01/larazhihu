@@ -25,6 +25,6 @@ class QuestionCommentsController extends Controller
         /** @var Question $question */
         $question = Question::published()->findOrFail($questionId);
         $comment = $question->comment(request('content'), auth()->user());
-        return back();
+        return $comment->load('owner');
     }
 }

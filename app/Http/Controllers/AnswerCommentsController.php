@@ -23,7 +23,7 @@ class AnswerCommentsController extends Controller
         $this->validate(\request(), [
             'content' => 'required'
         ]);
-        $answer->comment(\request('content'), auth()->user(),);
-        return back();
+        $comment = $answer->comment(\request('content'), auth()->user(),);
+        return $comment->load('owner');
     }
 }

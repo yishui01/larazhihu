@@ -22,6 +22,7 @@ class Question extends Model
         'downVotesCount',
         'subscriptionsCount',
         'commentsCount',
+        'commentEndpoint',
     ];
 
     public function getSubscriptionsCountAttribute()

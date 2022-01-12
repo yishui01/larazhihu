@@ -199,4 +199,14 @@ class AnswerTest extends TestCase
         return create(Answer::class);
     }
 
+    /** @test */
+    public function can_get_comment_endpoint_attribute()
+    {
+        $answer = create(Answer::class);
+
+        $answer->comment('it is content', create(User::class));
+
+        $this->assertEquals("/answers/{$answer->id}/comments", $answer->refresh()->commentEndpoint);
+    }
+
 }

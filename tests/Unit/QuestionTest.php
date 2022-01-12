@@ -254,4 +254,16 @@ class QuestionTest extends TestCase
     {
         return create(Question::class);
     }
+
+    /**
+     * @test
+     */
+    public function can_get_comment_endpoint_attribute()
+    {
+        $question = create(Question::class);
+
+        $question->comment('it is content', create(User::class));
+
+        $this->assertEquals("/questions/{$question->id}/comments", $question->refresh()->commentEndpoint);
+    }
 }

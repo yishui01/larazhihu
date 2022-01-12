@@ -49,7 +49,7 @@ class QuestionCommentsTest extends TestCase
         $response = $this->post(route('question-comments.store', ['question' => $question]), [
             'content' => 'This is a comment.'
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(201);
         $comment = $question->comments()->where('user_id', $user->id)->first();
         $this->assertNotNull($comment);
 

@@ -33,7 +33,7 @@ class AnswerCommentsTest extends TestCase
         $response = $this->post(route('answer-comments.store', ['answer' => $answer]), [
             'content' => 'This is a comment.'
         ]);
-        $response->assertStatus(302);
+        $response->assertStatus(201);
         $comment = $answer->comments()->where('user_id', $user->id)->first();
         $this->assertNotNull($comment);
         $this->assertEquals(1, $answer->comments()->count());
